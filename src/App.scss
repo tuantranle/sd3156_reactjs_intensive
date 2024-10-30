@@ -1,5 +1,12 @@
 // src/App.scss
 
+/* Global reset for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --background-gradient: linear-gradient(to right, #f0f2f5, #ffffff);
   --background-color: #ffffff;
@@ -33,7 +40,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
+  padding: 0; /* Ensure no extra padding */
 }
 
 .app-header {
@@ -44,6 +51,7 @@
   padding: 10px 20px;
   background-color: var(--background-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 0; /* Remove space above header */
 }
 
 .header-left h1 {
@@ -58,7 +66,7 @@
   gap: 20px;
 }
 
-/* Theme Toggle Button with Enhanced Styling */
+/* Enhanced Theme Toggle Button */
 .theme-toggle {
   display: flex;
   align-items: center;

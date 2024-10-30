@@ -4,7 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import VerificationCode from './VerificationCode'; // Import VerificationCode component
+import VerificationCode from '../auth/Verify/VerificationCode'; // Import VerificationCode component
 import { RegisterUser, User } from '../../models/user';
 import './Register.scss';
 
@@ -48,68 +48,75 @@ const Register = () => {
     }
   };
 
+  const handleVerification = async (token: string) => {
+  };
+
+
   return (
-    <div className="register-card">
-      {isRegistered ? (
-        <VerificationCode email={email} userName={userName} /> // Show verification component on success
-      ) : (
-        <>
-          <h2>Register</h2>
-          <Formik
-            initialValues={{
-              userName: '',
-              email: '',
-              password: '',
-              confirmPassword: '',
-              firstName: '',
-              lastName: '',
-            }}
-            validationSchema={RegisterSchema}
-            onSubmit={handleRegister}
-          >
-            {() => (
-              <Form>
-                <div className="form-group">
-                  <label htmlFor="firstName">First Name</label>
-                  <Field name="firstName" type="text" placeholder="Enter your first name" />
-                  <ErrorMessage name="firstName" component="div" className="error-message" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="lastName">Last Name</label>
-                  <Field name="lastName" type="text" placeholder="Enter your last name" />
-                  <ErrorMessage name="lastName" component="div" className="error-message" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="userName">Username</label>
-                  <Field name="userName" type="text" placeholder="Enter your username" />
-                  <ErrorMessage name="userName" component="div" className="error-message" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <Field name="email" type="email" placeholder="Enter your email" />
-                  <ErrorMessage name="email" component="div" className="error-message" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <Field name="password" type="password" placeholder="Enter your password" />
-                  <ErrorMessage name="password" component="div" className="error-message" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirm Password</label>
-                  <Field name="confirmPassword" type="password" placeholder="Confirm your password" />
-                  <ErrorMessage name="confirmPassword" component="div" className="error-message" />
-                </div>
-                {errorMessage && <div className="error-message">{errorMessage}</div>}
-                <button type="submit" className="register-button">Register</button>
-              </Form>
-            )}
-          </Formik>
-          <div className="login-link">
-            <p>Already have an account? <a href="/login">Log in</a></p>
-          </div>
-        </>
-      )}
+    <div className="register-container">
+      <div className="register-card">
+        {isRegistered ? (
+          <VerificationCode email={email} userName={userName} onVerifyComplete={handleVerification}/> // Show verification component on success
+        ) : (
+          <>
+            <h2>Register</h2>
+            <Formik
+              initialValues={{
+                userName: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                firstName: '',
+                lastName: '',
+              }}
+              validationSchema={RegisterSchema}
+              onSubmit={handleRegister}
+            >
+              {() => (
+                <Form>
+                  <div className="form-group">
+                    <label htmlFor="firstName">First Name</label>
+                    <Field name="firstName" type="text" placeholder="Enter your first name" />
+                    <ErrorMessage name="firstName" component="div" className="error-message" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="lastName">Last Name</label>
+                    <Field name="lastName" type="text" placeholder="Enter your last name" />
+                    <ErrorMessage name="lastName" component="div" className="error-message" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="userName">Username</label>
+                    <Field name="userName" type="text" placeholder="Enter your username" />
+                    <ErrorMessage name="userName" component="div" className="error-message" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <Field name="email" type="email" placeholder="Enter your email" />
+                    <ErrorMessage name="email" component="div" className="error-message" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <Field name="password" type="password" placeholder="Enter your password" />
+                    <ErrorMessage name="password" component="div" className="error-message" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <Field name="confirmPassword" type="password" placeholder="Confirm your password" />
+                    <ErrorMessage name="confirmPassword" component="div" className="error-message" />
+                  </div>
+                  {errorMessage && <div className="error-message">{errorMessage}</div>}
+                  <button type="submit" className="register-button">Register</button>
+                </Form>
+              )}
+            </Formik>
+            <div className="login-link">
+              <p>Already have an account? <a href="/login">Log in</a></p>
+            </div>
+          </>
+        )}
+      </div>
     </div>
+    
   );
 };
 

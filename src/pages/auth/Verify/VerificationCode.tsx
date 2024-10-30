@@ -2,15 +2,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../../components/modal/Modal';
+import Modal from '../../../components/modal/Modal';
 import './VerificationCode.scss';
 
 interface VerificationCodeProps {
   email: string;
   userName: string;
+  onVerifyComplete: (code: string) => void;
 }
 
-const VerificationCode: React.FC<VerificationCodeProps> = ({ email, userName }) => {
+const VerificationCode: React.FC<VerificationCodeProps> = ({ email, userName, onVerifyComplete }) => {
   const [code, setCode] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -23,6 +24,8 @@ const VerificationCode: React.FC<VerificationCodeProps> = ({ email, userName }) 
         code,
       });
       if (response.status === 200) {
+        const token = response.data.data.token;
+        onVerifyComplete(token);
         setShowModal(true); // Show success modal on verification
       }
     } catch (error) {
@@ -32,13 +35,13 @@ const VerificationCode: React.FC<VerificationCodeProps> = ({ email, userName }) 
 
   const handleModalClose = () => {
     setShowModal(false);
-    navigate('/login'); // Redirect to login after modal is closed
+    navigate('/'); // Redirect to login after modal is closed
   };
 
   return (
     <div className="verification-card">
       <h3>Email Verification</h3>
-      <p>A verification code has been sent to <strong>{email}</strong>. Please enter the code below to verify your email.</p>
+      <p>A verification code has been sent to <strong>{email == '' ? 'your email' : email}</strong>. Please enter the code below to verify your email.</p>
       <input
         type="text"
         placeholder="Enter verification code"

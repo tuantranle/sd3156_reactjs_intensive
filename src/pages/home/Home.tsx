@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.scss';
+import { User } from '../../models/user';
 
 const Home = () => {
-  const [userLoggedin, setuserLoggedin] = useState<string>('');
+  const [userLoggedin, setuserLoggedin] = useState<User | null>(null); 
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -16,7 +17,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
-        <h1>Welcome{userLoggedin ? `, ${userLoggedin}` : ''}!</h1>
+        <h1>Welcome{userLoggedin ? `, ${userLoggedin.userName}` : ''}!</h1>
         <p>Discover quality products and manage your orders with ease.</p>
         <div className="button-group">
           <Link to="/products">

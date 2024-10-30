@@ -11,6 +11,7 @@ import ProductCatalog from './pages/ProductCatalog';
 import AdminOrders from './pages/AdminOrders';
 import Register from './pages/register/Register';
 import './App.scss';
+import { User } from './models/user';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -26,11 +27,17 @@ const ProtectedRoute = ({ children, user, adminOnly = false }: ProtectedRoutePro
 
 function App() {
   const [theme, setTheme] = useState('light');
-  const [user, setUser] = useState<{ isAdmin: boolean } | null>(null); // User state
+  const [user, setUser] = useState<User | null>(null); // User state
 
   const navigate = useNavigate();
 
   useEffect(() => {
+   debugger;
+    // const loggedUser = localStorage.getItem('user');
+    // if(loggedUser){
+    //   localStorage.setItem('user', JSON.stringify(loggedUser))
+    // }
+
     const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -43,7 +50,8 @@ function App() {
     localStorage.setItem('theme', newTheme);
   };
 
-  const login = (user: { isAdmin: boolean }) => {
+  const login = (user: User) => {
+    debugger;
     setUser(user);
     navigate('/');
   };
