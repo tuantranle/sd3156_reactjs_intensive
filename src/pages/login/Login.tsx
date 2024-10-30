@@ -11,18 +11,26 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const Login = () => {
+interface LoginProps {
+  onLogin: (user: { isAdmin: boolean }) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = async (values: { userName: string; password: string }) => {
     try {
-      debugger;
+      
       const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/auth/login', values);
       
       if (response.data.status === 200) {
         localStorage.setItem('user', JSON.stringify(values.userName)); // Save user details
 
+        const user = { isAdmin: credentials.username === 'admin', userName: values.userName };
+        onLogin(user); // Update the user state in App
+        
         // Redirect to the homepage
         navigate('/');
       } else {

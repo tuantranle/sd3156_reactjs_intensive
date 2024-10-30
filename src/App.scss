@@ -1,51 +1,129 @@
 // src/App.scss
 
-// Background Styling for All Pages
-.page-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(to right, #6a11cb, #2575fc); // Beautiful gradient background
-  position: relative;
-  overflow: hidden;
-  padding: 20px;
+:root {
+  --background-gradient: linear-gradient(to right, #f0f2f5, #ffffff);
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #6a11cb;
+  --secondary-color: #2575fc;
+  --card-background-color: #ffffff;
+  --button-background-color: #6a11cb;
+  --button-text-color: #ffffff;
+  --input-background-color: #f9f9f9;
+  --input-border-color: #ddd;
 }
 
-// Subtle Background Pattern (Floating Circles)
-.page-container::before,
-.page-container::after {
+[data-theme="dark"] {
+  --background-gradient: linear-gradient(to right, #1e1e1e, #333333);
+  --background-color: #1e1e1e;
+  --text-color: #f1f1f1;
+  --primary-color: #bb86fc;
+  --secondary-color: #03dac6;
+  --card-background-color: #2a2a2a;
+  --button-background-color: #bb86fc;
+  --button-text-color: #1e1e1e;
+  --input-background-color: #333333;
+  --input-border-color: #444;
+}
+
+.page-container {
+  background: var(--background-gradient);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: var(--background-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-left h1 {
+  font-size: 24px;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Theme Toggle Button with Enhanced Styling */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-button {
+  width: 50px;
+  height: 26px;
+  background-color: var(--button-background-color);
+  border-radius: 15px;
+  position: relative;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-button:before {
   content: '';
   position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  animation: float 6s ease-in-out infinite;
-  pointer-events: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.page-container::before {
-  width: 300px;
-  height: 300px;
-  top: -100px;
-  left: -100px;
+.toggle-button.light {
+  background-color: var(--button-background-color);
 }
 
-.page-container::after {
-  width: 400px;
-  height: 400px;
-  bottom: -150px;
-  right: -150px;
-  animation-duration: 8s;
+.toggle-button.light:before {
+  transform: translateX(0);
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(20px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+.toggle-button.dark {
+  background-color: var(--secondary-color);
+}
+
+.toggle-button.dark:before {
+  transform: translateX(24px);
+  background-color: var(--background-color);
+}
+
+.theme-label {
+  font-size: 16px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.login-button, .logout-button {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover, .logout-button:hover {
+  background-color: var(--secondary-color);
 }
