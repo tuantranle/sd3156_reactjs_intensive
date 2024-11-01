@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from './providers/AuthProvider';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Profile from './pages/userProfile/Profile';
-import ProductCatalog from './pages/ProductCatalog';
+import ProductCatalog from './pages/products/ProductCatalog';
 import AdminOrders from './pages/AdminOrders';
 import Register from './pages/register/Register';
 import './App.scss';

@@ -6,7 +6,7 @@ const useAddProduct = () => {
   const dispatch = useDispatch();
 
   const handleAddProduct = (product: Product) => { // Explicitly type `product`
-    dispatch(addProduct(product));
+    //dispatch(addProduct(product));
   };
 
   return handleAddProduct;

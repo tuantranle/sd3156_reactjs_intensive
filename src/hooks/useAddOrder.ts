@@ -6,7 +6,7 @@ const useAddOrder = () => {
   const dispatch = useDispatch();
 
   const handleAddOrder = (order: Product) => {
-    dispatch(addOrder(order));
+    //dispatch(addOrder(order));
   };
 
   return handleAddOrder;
