@@ -13,11 +13,7 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-interface LoginProps {
-  onLogin: (user: User) => void;
-}
-
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
+const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const [isVerificationStep, setIsVerificationStep] = useState(false);
@@ -34,16 +30,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
         const user: User = {
           userName: userName,
-          isAdmin: userName === 'admin', // Set admin status conditionally
-          email: '',
-          firstName: '',
-          lastName: '',
-          password: '',
-          id: 0
+          isAdmin: isAdmin,
+          token: ''
         };
-        
+
         setTempUserData(user);
-        onLogin(user);
         setErrorMessage(null);
         setIsVerificationStep(true); // Move to the verification step
       } else {
@@ -58,13 +49,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }
   };
 
-  const handleVerification = async (token: string) => {
-    if (!tempUserData) return;
-
-    localStorage.setItem('authToken', token); // Save token in localStorage
-    localStorage.setItem('user', JSON.stringify(tempUserData))
-  };
-
   return (
     <div className="login-container">
       <div className="login-card">
@@ -72,7 +56,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         
         {isVerificationStep ? (
           // Verification Code Step
-          <VerificationCode email='' userName={tempUserData?.userName ?? ''} onVerifyComplete={handleVerification}/>
+          <VerificationCode userName={tempUserData?.userName ?? ''}/>
         ) : (
           // Initial Login Form
           <Formik

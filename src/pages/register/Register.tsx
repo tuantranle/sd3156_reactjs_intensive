@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import VerificationCode from '../auth/Verify/VerificationCode'; // Import VerificationCode component
-import { RegisterUser, User } from '../../models/user';
+import { RegisterUser } from '../../models/user';
 import './Register.scss';
 
 const RegisterSchema = Yup.object().shape({
@@ -26,7 +26,7 @@ const Register = () => {
   const [userName, setUserName] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleRegister = async (values: any) => {
+  const handleRegister = async (values: RegisterUser) => {
     const { confirmPassword, ...submitValue } = values;
     try {
       const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/auth/register', submitValue);
@@ -48,15 +48,11 @@ const Register = () => {
     }
   };
 
-  const handleVerification = async (token: string) => {
-  };
-
-
   return (
     <div className="register-container">
       <div className="register-card">
         {isRegistered ? (
-          <VerificationCode email={email} userName={userName} onVerifyComplete={handleVerification}/> // Show verification component on success
+          <VerificationCode userName={userName} /> // Show verification component on success
         ) : (
           <>
             <h2>Register</h2>
