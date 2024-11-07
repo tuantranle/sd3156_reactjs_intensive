@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import VerificationCode from '../auth/Verify/VerificationCode'; // Import VerificationCode component
 import { RegisterUser } from '../../models/user';
-import './Register.scss';
+import './register.scss';
 
 const RegisterSchema = Yup.object().shape({
   userName: Yup.string().required('Username is required'),

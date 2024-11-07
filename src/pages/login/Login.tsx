@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import VerificationCode from '../auth/Verify/VerificationCode'; // Import VerificationCode component
-import './Login.scss';
+import './login.scss';
 import { User } from '../../models/user';
 
 const LoginSchema = Yup.object().shape({

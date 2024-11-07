@@ -1,10 +1,11 @@
 // src/App.scss
 
-/* Global reset for all elements */
+/* Reset and Global Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 :root {
@@ -40,33 +41,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0; /* Ensure no extra padding */
+  padding: 0 20px;
 }
 
+/* Header Styling */
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 10px 20px;
+  padding: 15px 30px;
   background-color: var(--background-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 0; /* Remove space above header */
 }
 
 .header-left h1 {
-  font-size: 24px;
+  font-size: 26px;
   color: var(--primary-color);
-  margin: 0;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.header-left h1 a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.header-left h1 a:hover {
+  color: var(--secondary-color);
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 
-/* Enhanced Theme Toggle Button */
+/* Enhanced Theme Toggle */
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -97,10 +109,6 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.toggle-button.light {
-  background-color: var(--button-background-color);
-}
-
 .toggle-button.light:before {
   transform: translateX(0);
 }
@@ -120,7 +128,7 @@
   font-weight: bold;
 }
 
-.login-button, .logout-button {
+.profile-link, .login-button, .logout-button {
   padding: 8px 16px;
   background-color: var(--primary-color);
   color: var(--button-text-color);
@@ -132,6 +140,6 @@
   transition: background-color 0.3s ease;
 }
 
-.login-button:hover, .logout-button:hover {
+.profile-link:hover, .login-button:hover, .logout-button:hover {
   background-color: var(--secondary-color);
 }

@@ -1,7 +1,7 @@
 // src/pages/Profile.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Profile.scss';
+import './profile.scss';
 import { useAuth } from '../../providers/AuthProvider';
 
 interface UserProfile {

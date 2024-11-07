@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../../components/modal/Modal';
-import './VerificationCode.scss';
+import './verificationCode.scss';
 import { useAuth } from '../../../providers/AuthProvider';
 import { User } from '../../../models/user';
 
