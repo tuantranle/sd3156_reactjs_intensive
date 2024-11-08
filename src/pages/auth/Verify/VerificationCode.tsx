@@ -1,11 +1,9 @@
-// src/register/VerificationCode.tsx
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { verifyCode, resetError } from '../../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../../components/modal/Modal';
 import './verificationCode.scss';
-import { useAuth } from '../../../providers/AuthProvider';
-import { User } from '../../../models/user';
 
 interface VerificationCodeProps {
   userName: string;
@@ -13,40 +11,33 @@ interface VerificationCodeProps {
 
 const VerificationCode: React.FC<VerificationCodeProps> = ({ userName }) => {
   const [code, setCode] = useState('');
-  const [message, setMessage] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { isLoading, verificationMessage } = useAppSelector((state) => state.auth);
 
-  const handleVerification = async () => {
-    try {
-      const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/auth/verify', {
-        userName,
-        code,
-      });
-      if (response.status === 200) {
-        const token = response.data.data.token;
-        const user: User = {
-          userName: userName,
-          isAdmin: userName === "admin" ? true : false,
-          token: token
-        };
-        login(user);
-        setShowModal(true); // Show success modal on verification
-      }
-    } catch (error) {
-      setMessage('Verification failed. Please check the code and try again.');
+  useEffect(() => {
+    if (verificationMessage === 'Verification successful! Redirecting to home.') {
+      setShowModal(true);
+      const timer = setTimeout(() => {
+        setShowModal(false);
+        navigate('/'); // Redirect to home page on success
+      }, 2000);
+
+      return () => clearTimeout(timer);
     }
-  };
 
-  const handleModalClose = () => {
-    setShowModal(false);
-    navigate('/'); // Redirect to login after modal is closed
+    return () => {
+      dispatch(resetError()); // Reset messages on component unmount
+    };
+  }, [verificationMessage, dispatch, navigate]);
+
+  const handleVerification = () => {
+    dispatch(verifyCode({ userName, code }));
   };
 
   return (
     <div className="verification-card">
-      <h3>Email Verification</h3>
       <p>A verification code has been sent to your email. Please enter the code below to verify your email.</p>
       <input
         type="text"
@@ -55,9 +46,19 @@ const VerificationCode: React.FC<VerificationCodeProps> = ({ userName }) => {
         onChange={(e) => setCode(e.target.value)}
         className="verification-input"
       />
-      <button onClick={handleVerification} className="verification-button">Verify</button>
-      {message && <div className="verification-message">{message}</div>}
-      {showModal && <Modal message="Verification successful! Redirecting to login." onClose={handleModalClose} />}
+      <button onClick={handleVerification} className="verification-button" disabled={isLoading}>
+        {isLoading ? 'Verifying...' : 'Verify'}
+      </button>
+      {verificationMessage && <div className="verification-message">{verificationMessage}</div>}
+      {showModal && (
+        <Modal
+          message="Verification successful! Redirecting to home."
+          onClose={() => {
+            setShowModal(false);
+            navigate('/');
+          }}
+        />
+      )}
     </div>
   );
 };

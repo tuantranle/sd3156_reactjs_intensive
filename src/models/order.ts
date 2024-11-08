@@ -1,4 +1,3 @@
-// src/models/order.ts
 export interface Category {
     name: string;
     img: string;

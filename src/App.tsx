@@ -1,19 +1,18 @@
-// src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './redux/store';
-import { AuthProvider, useAuth } from './providers/AuthProvider';
-import { OrderProvider } from './providers/OrderProvider';
+import { store } from './redux/store';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Profile from './pages/userProfile/Profile';
 import ProductCatalog from './pages/products/ProductCatalog';
 import Register from './pages/register/Register';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import './App.scss';
+import './app.scss';
 import CompleteOrder from './pages/orders/CompleteOrder';
 import OrderCatalog from './pages/orders/OrderCatalog';
+import { useAppDispatch, useAppSelector } from './hooks/hooks';
+import { logout } from './redux/slices/authSlice';
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -34,32 +33,29 @@ function App() {
 
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <OrderProvider>
-          <div className="page-container">
-            <Header toggleTheme={toggleTheme} theme={theme} />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/products" element={<ProductCatalog />} />
-              <Route path="/orders" element={<ProtectedRoute adminOnly={true}><OrderCatalog /></ProtectedRoute>} />
-              <Route path="/complete-order" element={<CompleteOrder />} />
-            </Routes>
-          </div>
-        </OrderProvider>
-      </AuthProvider>
+        <div className="page-container">
+          <Header toggleTheme={toggleTheme} theme={theme} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/products" element={<ProductCatalog />} />
+            <Route path="/orders" element={<ProtectedRoute adminOnly={true}><OrderCatalog /></ProtectedRoute>} />
+            <Route path="/complete-order" element={<CompleteOrder />} />
+          </Routes>
+        </div>
     </Provider>
   );
 }
 
 const Header: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTheme, theme }) => {
-  const { user, logout } = useAuth();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useAppSelector((state) => state.auth.user);
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
     navigate('/login');
   };
 

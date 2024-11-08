@@ -1,11 +1,10 @@
-// src/pages/Home.tsx
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/hooks';
 import './home.scss';
-import { useAuth } from '../../providers/AuthProvider';
 
 const Home = () => {
-  const { user } = useAuth();
+  const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
   const handleLoginRedirect = () => {

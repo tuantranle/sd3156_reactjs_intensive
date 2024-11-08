@@ -1,25 +1,23 @@
-// src/components/ProtectedRoute.tsx
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../providers/AuthProvider';
+import { useAppSelector } from '../../hooks/hooks';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   adminOnly?: boolean;
-  redirectPath?: string; // Optional custom redirect path if not authorized
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false, redirectPath = "/" }) => {
-  const { user } = useAuth();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false }) => {
+  const user = useAppSelector((state) => state.auth.user);
 
   if (!user) {
-    // Redirect to login if not logged in
+    // Redirect to login if the user is not authenticated
     return <Navigate to="/login" />;
   }
 
   if (adminOnly && !user.isAdmin) {
-    // Redirect to specified path if not an admin
-    return <Navigate to={redirectPath} />;
+    // Redirect to the home page or an unauthorized page if admin access is required and the user is not an admin
+    return <Navigate to="/" />;
   }
 
   return <>{children}</>;

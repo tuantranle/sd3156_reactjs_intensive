@@ -1,22 +1,21 @@
-// src/pages/orders/OrderCatalog.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Order } from '../../models/order';
-import { useAuth } from '../../providers/AuthProvider';
+// import { useAuth } from '../../providers/AuthProvider';
 import './orderCatalog.scss';
 
 const OrderCatalog: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get('https://ccmernapp-11a99251a1a7.herokuapp.com/api/shop/orders', {
           headers: {
-            Authorization: `Bearer ${user?.token}`,
+            // Authorization: `Bearer ${user?.token}`,
           },
         });
         debugger;
@@ -32,10 +31,10 @@ const OrderCatalog: React.FC = () => {
       }
     };
 
-    if (user?.token) {
-      fetchOrders();
-    }
-  }, [user?.token]);
+    // if (user?.token) {
+    //   fetchOrders();
+    // }
+  }, []);
 
   if (loading) return <div>Loading orders...</div>;
   if (error) return <div>{error}</div>;

@@ -1,23 +1,14 @@
-// src/pages/orders/CompleteOrder.tsx
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useOrder } from '../../providers/OrderProvider';
 import './completeOrder.scss';
 
 const CompleteOrder: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { completeOrder } = useOrder();
   const { orderNumber, productId, quantity } = state || {};
 
   const handleCompleteOrder = async () => {
-    const success = await completeOrder(orderNumber);
-    if (success) {
-      alert('Order completed successfully!');
-      navigate('/products'); // Redirect to products page after completing the order
-    } else {
-      alert('Failed to complete the order. Please try again.');
-    }
+
   };
 
   if (!orderNumber) {

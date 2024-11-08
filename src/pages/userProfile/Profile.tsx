@@ -1,8 +1,7 @@
-// src/pages/Profile.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './profile.scss';
-import { useAuth } from '../../providers/AuthProvider';
+// import { useAuth } from '../../providers/AuthProvider';
 
 interface UserProfile {
   userName: string;
@@ -15,19 +14,19 @@ interface UserProfile {
 const Profile: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (!user?.token) {
-        setErrorMessage('Unauthorized access. Please log in.');
-        return;
-      }
+      // if (!user?.token) {
+      //   setErrorMessage('Unauthorized access. Please log in.');
+      //   return;
+      // }
 
       try {
         const response = await axios.get('https://ccmernapp-11a99251a1a7.herokuapp.com/api/user', {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            // Authorization: `Bearer ${user.token}`,
           },
         });
 

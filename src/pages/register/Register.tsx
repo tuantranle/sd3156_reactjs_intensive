@@ -1,12 +1,11 @@
-// src/register/Register.tsx
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { register, resetError } from '../../redux/slices/authSlice';
+import VerificationCode from '../auth/Verify/VerificationCode';
 import * as Yup from 'yup';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import VerificationCode from '../auth/Verify/VerificationCode'; // Import VerificationCode component
-import { RegisterUser } from '../../models/user';
 import './register.scss';
+import { RegisterUser } from '../../models/user';
 
 const RegisterSchema = Yup.object().shape({
   userName: Yup.string().required('Username is required'),
@@ -19,40 +18,26 @@ const RegisterSchema = Yup.object().shape({
   lastName: Yup.string().required('Last name is required'),
 });
 
-const Register = () => {
-  const [isRegistered, setIsRegistered] = useState(false); // Track if registration is successful
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [email, setEmail] = useState<string>(''); // Track user's email for verification
-  const [userName, setUserName] = useState<string>('');
-  const navigate = useNavigate();
+const Register: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { isLoading, error, isRegistered, user } = useAppSelector((state) => state.auth);
 
-  const handleRegister = async (values: RegisterUser) => {
-    const { confirmPassword, ...submitValue } = values;
-    try {
-      const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/auth/register', submitValue);
-      if (response.data.status === 200){
-        setIsRegistered(true); // Set registration as successful
-        setEmail(values.email); // Save email for verification purposes
-        setUserName(values.userName);
-        setErrorMessage(null);
-      } else {
-        setErrorMessage(response.data.message);
-      }
-      
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 500) {
-        setErrorMessage('Server error: Please try again later.');
-      } else {
-        setErrorMessage('Registration failed. Please try again.');
-      }
-    }
+  useEffect(() => {
+    debugger;
+    return () => {
+      dispatch(resetError()); // Clear errors on unmount
+    };
+  }, [dispatch]);
+
+  const handleRegister = (values: RegisterUser) => {
+    dispatch(register(values));
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
-        {isRegistered ? (
-          <VerificationCode userName={userName} /> // Show verification component on success
+        {isRegistered && user?.userName ? (
+          <VerificationCode userName={user.userName} /> // Pass userName from Redux user object
         ) : (
           <>
             <h2>Register</h2>
@@ -100,8 +85,10 @@ const Register = () => {
                     <Field name="confirmPassword" type="password" placeholder="Confirm your password" />
                     <ErrorMessage name="confirmPassword" component="div" className="error-message" />
                   </div>
-                  {errorMessage && <div className="error-message">{errorMessage}</div>}
-                  <button type="submit" className="register-button">Register</button>
+                  {error && <div className="error-message">{error}</div>}
+                  <button type="submit" className="register-button" disabled={isLoading}>
+                    {isLoading ? 'Registering...' : 'Register'}
+                  </button>
                 </Form>
               )}
             </Formik>
@@ -112,7 +99,6 @@ const Register = () => {
         )}
       </div>
     </div>
-    
   );
 };
 

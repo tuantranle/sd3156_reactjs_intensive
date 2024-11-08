@@ -1,10 +1,9 @@
-// src/pages/products/ProductCatalog.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Product } from '../../models/product';
 import useAddOrder from '../../hooks/useAddOrder';
 import './productCatalog.scss';
-import { useAuth } from '../../providers/AuthProvider';
+// import { useAuth } from '../../providers/AuthProvider';
 
 const ProductCatalog: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -12,14 +11,14 @@ const ProductCatalog: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const { addOrder, loading: orderLoading, error: orderError } = useAddOrder();
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('https://ccmernapp-11a99251a1a7.herokuapp.com/api/shop/products', {
           headers: {
-            Authorization: `Bearer ${user?.token}`, // Include token in the headers
+            // Authorization: `Bearer ${user?.token}`, // Include token in the headers
           },
         });
 
