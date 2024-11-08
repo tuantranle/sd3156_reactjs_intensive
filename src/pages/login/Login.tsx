@@ -1,9 +1,10 @@
+// Login.tsx
 import React, { useEffect } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { login, resetError, proceedToVerification } from '../../redux/slices/authSlice';
 import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../../providers/AuthProvider';
 import VerificationCode from '../auth/Verify/VerificationCode';
 import './login.scss';
 
@@ -13,29 +14,37 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { isLoading, error, isVerificationStep, user } = useAppSelector((state) => state.auth); // Access user state
-  const userName = user?.userName || ''; // Get the username if it exists
+  const { user, login, isVerificationStep, proceedToVerification } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If user is already logged in, redirect to home page
-    if (user && user.token != '' ) {
+    // Redirect to home if user is already authenticated
+    if (user && user.token) {
       navigate('/');
     }
   }, [user, navigate]);
-  
+
   const handleLogin = async (values: { userName: string; password: string }) => {
-    const result = await dispatch(login(values));
-    
-    // Proceed to verification if login was successful
-    if (result.meta.requestStatus === 'fulfilled') {
-      dispatch(proceedToVerification());
+    try {
+      const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/auth/login', values);
+
+      if (response.data.status === 200) {
+        const userData = {
+          userName: values.userName,
+          isAdmin: values.userName === 'admin',
+          token: '',
+        };
+        login(userData); // Set user in context, which also saves to localStorage
+        proceedToVerification(); // Go to verification step if needed
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('Invalid username or password. Please try again.');
     }
   };
 
   if (isVerificationStep) {
-    return <VerificationCode userName={userName} />; // Pass the actual username as a prop
+    return <VerificationCode userName={user?.userName || ''} />;
   }
 
   return (
@@ -59,16 +68,13 @@ const Login: React.FC = () => {
                 <Field name="password" type="password" placeholder="Enter your password" />
                 <ErrorMessage name="password" component="div" className="error-message" />
               </div>
-              {error && <div className="error-message">{error}</div>}
-              <button type="submit" className="login-button" disabled={isLoading}>
-                {isLoading ? 'Loading...' : 'Login'}
-              </button>
+              <button type="submit" className="login-button">Login</button>
             </Form>
           )}
         </Formik>
         <div className="register-link">
           <p>Don’t have an account? <Link to="/register">Register here</Link></p>
-        </div>  
+        </div>
       </div>
     </div>
   );

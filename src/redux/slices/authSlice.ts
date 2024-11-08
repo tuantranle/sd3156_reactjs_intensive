@@ -41,31 +41,6 @@ export const register = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk(
-  'auth/login',
-  async (credentials: { userName: string; password: string }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/auth/login', credentials);
-      if (response.data.status === 200) {
-        const user: User = {
-          userName: credentials.userName,
-          isAdmin: credentials.userName === 'admin',
-          token: '',
-        };
-        localStorage.setItem('user', JSON.stringify(user));
-        return user;
-      } else {
-        return rejectWithValue(response.data.message || 'Unexpected login issue');
-      }
-    } catch (error) {
-      const errorMessage = axios.isAxiosError(error) && error.response?.data?.message
-        ? error.response.data.message
-        : 'Login failed. Please try again later.';
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
-
 export const verifyCode = createAsyncThunk(
   'auth/verifyCode',
   async ({ userName, code }: { userName: string; code: string }, { rejectWithValue }) => {
@@ -127,19 +102,6 @@ const authSlice = createSlice({
         state.verificationMessage = 'Please check your email to complete verification.';
       })
       .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
-        state.isLoading = false;
-        state.user = action.payload;
-        state.isVerificationStep = true;
-      })
-      .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       })

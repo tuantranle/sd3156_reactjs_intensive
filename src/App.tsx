@@ -12,7 +12,7 @@ import './app.scss';
 import CompleteOrder from './pages/orders/CompleteOrder';
 import OrderCatalog from './pages/orders/OrderCatalog';
 import { useAppDispatch, useAppSelector } from './hooks/hooks';
-import { logout } from './redux/slices/authSlice';
+import { useAuth } from './providers/AuthProvider';
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -50,12 +50,11 @@ function App() {
 }
 
 const Header: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTheme, theme }) => {
-  const dispatch = useAppDispatch();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.auth.user);
 
   const handleLogout = () => {
-    dispatch(logout());
+    logout();
     navigate('/login');
   };
 

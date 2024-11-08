@@ -22,7 +22,7 @@ const CompleteOrder: React.FC = () => {
     }
 
     if (orderComplete) {
-      navigate('/'); // Redirect after successful completion
+      navigate('/orders'); // Redirect after successful completion
     }
 
     return () => {

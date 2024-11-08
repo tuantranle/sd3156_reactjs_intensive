@@ -1,33 +1,45 @@
+// useCreateOrder.ts
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from './hooks';
+import { addOrder } from '../redux/slices/productSlice';
 
-// import { useAuth } from '../providers/AuthProvider';
-
-const useAddOrder = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  // const { user } = useAuth();
+const useAddOrder = (token: string) => {
+  const [orderLoading, setOrderLoading] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const addOrder = async (productId: string, quantity: number) => {
-    // if (!user?.token) {
-    //   setError('User is not authenticated');
-    //   return;
-    // }
-
-    setLoading(true);
-    setError(null);
+  const createOrder = async (productId: string, quantity: number) => {
+    setOrderLoading(true);
+    setOrderError(null);
 
     try {
-     
-    } catch (err) {
-      setError('An error occurred while creating the order.');
+      const resultAction = await dispatch(addOrder({ productId, quantity, token }));
+      if (addOrder.fulfilled.match(resultAction)) {
+        const orderDetails = resultAction.payload;
+        navigate('/complete-order', {
+          state: {
+            orderNumber: orderDetails.orderNumber,
+            productId: productId,
+            quantity: quantity,
+          },
+        });
+      } else {
+        setOrderError('Failed to create order.');
+      }
+    } catch (error) {
+      setOrderError('Error creating order. Please try again.');
     } finally {
-      setLoading(false);
+      setOrderLoading(false);
     }
   };
 
-  return { addOrder, loading, error };
+  return {
+    createOrder,
+    orderLoading,
+    orderError,
+  };
 };
 
 export default useAddOrder;
