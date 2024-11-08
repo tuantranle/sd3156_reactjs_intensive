@@ -75,7 +75,6 @@ const Header: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTh
         </div>
         {user ? (
           <>
-            <Link to="/profile" className="profile-link">Profile</Link>
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </>
         ) : (

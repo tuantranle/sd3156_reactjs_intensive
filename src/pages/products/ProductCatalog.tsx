@@ -24,7 +24,11 @@ const ProductCatalog: React.FC = () => {
         });
 
         if (response.data.status === 200) {
-          setProducts(response.data.data.products);
+          const updatedProducts = response.data.data.products.map((product: Product) => ({
+            ...product,
+            img: `/products/${product.img}`, // Update img property to point to the correct path
+          }));
+          setProducts(updatedProducts);
         } else {
           setError('Failed to load products');
         }
@@ -57,6 +61,7 @@ const ProductCatalog: React.FC = () => {
           <img src={`/images/${product.img}`} alt={product.name} className="product-image" />
           <h3 className="product-name">{product.name}</h3>
           <p className="product-price">Price: ${product.sale_price}</p>
+          <label className="quantity-label">Quantity:</label>
           <input
             type="number"
             min="1"

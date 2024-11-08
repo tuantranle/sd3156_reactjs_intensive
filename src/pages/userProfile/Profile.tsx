@@ -46,7 +46,6 @@ const Profile: React.FC = () => {
           setErrorMessage(null);
         }
       } catch (error) {
-        debugger;
         if (axios.isAxiosError(error) && error.response?.status === 401) {
           setErrorMessage('Unauthorized access. Please log in.');
         } else {

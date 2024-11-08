@@ -1,0 +1,15 @@
+// src/styles/theme/_dark-theme.scss
+
+:root[data-theme="dark"] {
+    --background-gradient: linear-gradient(to right, #1e1e1e, #333333);
+    --background-color: #1e1e1e;
+    --text-color: #f1f1f1;
+    --primary-color: #bb86fc;
+    --secondary-color: #03dac6;
+    --card-background-color: #2a2a2a;
+    --button-background-color: #bb86fc;
+    --button-text-color: #1e1e1e;
+    --input-background-color: #333333;
+    --input-border-color: #444;
+  }
+  

@@ -1,80 +1,113 @@
 .product-catalog {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(3, 1fr); // Ensures 3 items per row
+  gap: 24px;
+  padding: 30px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr); // Adjust to 2 items per row on medium screens
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr; // Adjust to 1 item per row on smaller screens
+  }
 }
 
 .product-card {
   background-color: var(--card-background-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .product-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 16px;
 }
 
 .product-name {
   font-size: 1.2rem;
+  color: var(--text-color);
   margin: 10px 0;
+  font-weight: 600;
 }
 
 .product-price {
   font-size: 1.1rem;
   color: var(--primary-color);
+  font-weight: bold;
 }
 
 .regular-price {
   font-size: 0.9rem;
   color: var(--text-muted);
   text-decoration: line-through;
-  margin-left: 5px;
+  margin-left: 8px;
 }
 
-.product-description {
+.quantity-label {
   font-size: 0.9rem;
-  color: var(--text-muted);
-}
-
-.quantity-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 0;
-}
-
-.quantity-selector label {
+  color: var(--text-color);
+  margin-top: 12px;
   font-weight: bold;
-  margin-right: 8px;
 }
 
-.quantity-selector input {
+.quantity-input {
   width: 60px;
+  padding: 6px;
+  font-size: 1rem;
   text-align: center;
   border: 1px solid var(--input-border-color);
-  border-radius: 4px;
-  padding: 5px;
-  font-size: 1rem;
-  margin-left: 5px;
+  border-radius: 6px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
+  transition: border-color 0.3s ease;
+  margin-top: 8px;
+
+  &:focus {
+    border-color: var(--primary-color);
+  }
 }
 
-.add-to-order-button {
+.create-order-button {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--button-text-color);
   border: none;
-  padding: 10px 16px;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-top: 15px;
-  transition: background-color 0.3s;
+  padding: 12px 20px;
   font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
 }
 
-.add-to-order-button:hover {
-  background-color: var(--secondary-color);
+.error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 10px;
 }

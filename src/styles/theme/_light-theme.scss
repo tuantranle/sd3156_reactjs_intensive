@@ -1,0 +1,15 @@
+// src/styles/theme/_light-theme.scss
+
+:root[data-theme="light"] {
+    --background-gradient: linear-gradient(to right, #f0f2f5, #ffffff);
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --card-background-color: #ffffff;
+    --button-background-color: #6a11cb;
+    --button-text-color: #ffffff;
+    --input-background-color: #f9f9f9;
+    --input-border-color: #ddd;
+  }
+  

@@ -43,8 +43,14 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   const completeOrder = async (orderNumber: string): Promise<boolean> => {
     try {
       const response = await axios.post('https://ccmernapp-11a99251a1a7.herokuapp.com/api/shop/order/complete', {
-        orderNumber,
-      });
+        orderNumber },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, // Include token in headers
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       return response.status === 200;
     } catch (error) {
       console.error('Error completing order:', error);
