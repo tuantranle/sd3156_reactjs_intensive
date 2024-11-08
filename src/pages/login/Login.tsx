@@ -20,7 +20,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     // If user is already logged in, redirect to home page
-    if (user) {
+    if (user && user.token != '' ) {
       navigate('/');
     }
   }, [user, navigate]);
@@ -68,7 +68,7 @@ const Login: React.FC = () => {
         </Formik>
         <div className="register-link">
           <p>Don’t have an account? <Link to="/register">Register here</Link></p>
-        </div>
+        </div>  
       </div>
     </div>
   );

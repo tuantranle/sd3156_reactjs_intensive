@@ -1,40 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Order } from '../../models/order';
-// import { useAuth } from '../../providers/AuthProvider';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchOrders, clearOrderError } from '../../redux/slices/orderSlice';
+import { RootState } from '../../redux/store';
 import './orderCatalog.scss';
 
 const OrderCatalog: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  // const { user } = useAuth();
+  const dispatch = useAppDispatch();
+  const { orders, loading, error } = useAppSelector((state: RootState) => state.orders);
+  const token = useAppSelector((state: RootState) => state.auth.user?.token);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('https://ccmernapp-11a99251a1a7.herokuapp.com/api/shop/orders', {
-          headers: {
-            // Authorization: `Bearer ${user?.token}`,
-          },
-        });
-        debugger;
-        if (response.data.status === 200) {
-          setOrders(response.data.data.orders);
-        } else {
-          setError('Failed to load orders');
-        }
-      } catch (error) {
-        setError('Error fetching orders');
-      } finally {
-        setLoading(false);
-      }
+    if (token) {
+      dispatch(fetchOrders(token));
+    }
+    return () => {
+      dispatch(clearOrderError()); // Clear any error on unmount
     };
-
-    // if (user?.token) {
-    //   fetchOrders();
-    // }
-  }, []);
+  }, [dispatch, token]);
 
   if (loading) return <div>Loading orders...</div>;
   if (error) return <div>{error}</div>;

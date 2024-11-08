@@ -12,3 +12,13 @@ export interface RegisterUser {
   firstName: string;
   lastName: string;
 }
+
+export interface UserProfile {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  isAdmin: boolean;
+}

@@ -1,53 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Product } from '../../models/product';
-import useAddOrder from '../../hooks/useAddOrder';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchProducts, addOrder, clearOrderError } from '../../redux/slices/productSlice';
+import { RootState } from '../../redux/store';
 import './productCatalog.scss';
-// import { useAuth } from '../../providers/AuthProvider';
 
 const ProductCatalog: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { products, loading, error, orderLoading, orderError } = useAppSelector((state: RootState) => state.products);
+  const token = useAppSelector((state: RootState) => state.auth.user?.token); // Get token from auth slice
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
-  const { addOrder, loading: orderLoading, error: orderError } = useAddOrder();
-  // const { user } = useAuth();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('https://ccmernapp-11a99251a1a7.herokuapp.com/api/shop/products', {
-          headers: {
-            // Authorization: `Bearer ${user?.token}`, // Include token in the headers
-          },
-        });
-
-        if (response.data.status === 200) {
-          const updatedProducts = response.data.data.products.map((product: Product) => ({
-            ...product,
-            img: `/products/${product.img}`, // Update img property to point to the correct path
-          }));
-          setProducts(updatedProducts);
-        } else {
-          setError('Failed to load products');
-        }
-      } catch (error) {
-        setError('Error fetching products');
-      } finally {
-        setLoading(false);
-      }
+    if (token) {
+      dispatch(fetchProducts(token)); // Pass token to fetchProducts
+    }
+    return () => {
+      dispatch(clearOrderError());
     };
-
-    fetchProducts();
-  }, []);
+  }, [dispatch, token]);
 
   const handleQuantityChange = (productId: string, quantity: number) => {
     setQuantities((prev) => ({ ...prev, [productId]: quantity }));
   };
 
-  const handleCreateOrder = (productId: string) => {
-    const quantity = quantities[productId] || 1; // Default to 1 if no quantity is set
-    addOrder(productId, quantity);
+  const handleCreateOrder = async (productId: string) => {
+    const quantity = quantities[productId] || 1;
+    if (token) {
+      const resultAction = await dispatch(addOrder({ productId, quantity, token })); // Await the dispatch result
+      if (addOrder.fulfilled.match(resultAction)) {
+        const orderDetails = resultAction.payload; // Access order details from payload
+        navigate('/complete-order', {
+          state: {
+            orderNumber: orderDetails.orderNumber, // Example order number from response
+            productId: productId,
+            quantity: quantity,
+          },
+        });
+      }
+    }
   };
 
   if (loading) return <div>Loading products...</div>;
@@ -57,7 +49,7 @@ const ProductCatalog: React.FC = () => {
     <div className="product-catalog">
       {products.map((product) => (
         <div key={product.id} className="product-card">
-          <img src={`/images/${product.img}`} alt={product.name} className="product-image" />
+          <img src={`/images/products/${product.img}`} alt={product.name} className="product-image" />
           <h3 className="product-name">{product.name}</h3>
           <p className="product-price">Price: ${product.sale_price}</p>
           <label className="quantity-label">Quantity:</label>

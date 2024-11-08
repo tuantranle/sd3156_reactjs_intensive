@@ -23,7 +23,6 @@ const Register: React.FC = () => {
   const { isLoading, error, isRegistered, user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    debugger;
     return () => {
       dispatch(resetError()); // Clear errors on unmount
     };
