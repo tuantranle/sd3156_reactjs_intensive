@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# Demo Shop - React Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+Demo Shop is a feature-rich, responsive e-commerce web application built with React, Redux, Redux Toolkit, and Redux Thunk. The application supports a dynamic product catalog, order management, and user profile management. The UI includes theme switching (light/dark mode), a protected route structure, and responsive design optimized for various screen sizes.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **User Authentication**: Secure login and logout using JWT tokens.
+- **Theme Switching**: Toggle between light and dark themes.
+- **Product Catalog**: Browse available products, view details, and add to orders.
+- **Order Management**: Create and complete orders, view order history.
+- **User Profile**: Display and update user profile information.
+- **Protected Routes**: Access control for admin-only pages.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Getting Started
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+Ensure you have the following installed:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Node.js](https://nodejs.org/) (v14+ recommended)
+- [npm](https://www.npmjs.com/)
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/tuantranle/sd3156_reactjs_intensive
+   cd sd3156_reactjs_intensive
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Install Dependencies**:
+    npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Running the Application
+To start the app in development mode, run:
+    npm start
 
-### `npm run eject`
+The application will be available at http://localhost:3000.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Usage
+    Sign Up / Login:
+        Start with the login page for guest users.
+        Navigate to the products page once logged in.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    Product Catalog:
+        View the list of products, adjust quantities, and create orders.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    Order Management:
+        View your orders and complete them through the order management page.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+    Profile
+        Access and view your user profile and manage account information.
+        
+    Additional Features
+        Redux DevTools: For debugging Redux state in development mode.
+        Axios Interceptors: Handles API token addition and error responses globally.
