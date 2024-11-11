@@ -39,7 +39,8 @@ To start the app in development mode, run:
 The application will be available at http://localhost:3000.
 
 Usage
-    Sign Up / Login:
+    
+   Login:
         Start with the login page for guest users.
         Navigate to the products page once logged in.
 
